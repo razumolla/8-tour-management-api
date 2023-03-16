@@ -2,6 +2,7 @@ const Tour = require("../models/Tour");
 const {
   getToursService,
   createToursService,
+  getTourServiceById,
 } = require("../services/tours.service");
 
 exports.getTours = async (req, res, next) => {
@@ -34,6 +35,24 @@ exports.getTours = async (req, res, next) => {
     res.status(400).json({
       status: " failed",
       message: "can't get tours data",
+      error: error.message,
+    });
+  }
+};
+
+exports.getToursById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const tour = await getTourServiceById(id);
+    res.status(200).json({
+      status: "success",
+      data: tour,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: " failed",
+      message: "can't get single tours data",
       error: error.message,
     });
   }

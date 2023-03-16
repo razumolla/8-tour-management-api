@@ -6,5 +6,8 @@ router
   .route("/")
   .get(toursController.getTours)
   .post(toursController.createTours);
+router
+  .route("/:id")
+  .get(toursController.getToursById)
 
 module.exports = router;

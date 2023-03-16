@@ -1,9 +1,31 @@
 const Tour = require("../models/Tour");
-const { getToursService, createToursService } = require("../services/tours.service");
+const {
+  getToursService,
+  createToursService,
+} = require("../services/tours.service");
 
 exports.getTours = async (req, res, next) => {
   try {
-    const tours = await getToursService();
+    const queries = {};
+    if (req.query.fields) {
+      // search query: fields=name,image --> output: sortBy: "name image"
+      const fields = req.query.fields.split(",").join(" ");
+      queries.fields = fields;
+    }
+    if (req.query.sort) {
+      // search query: sort=name,price --> output: sortBy: "name image"
+      const sortBy = req.query.sort.split(",").join(" ");
+      queries.sortBy = sortBy;
+    }
+    //   -- paigination -----
+    if (req.query.page) {
+      const { page = 1, limit = 10 } = req.query;
+      const skip = (page - 1) * parseInt(limit);
+      queries.skip = skip;
+      queries.limit = parseInt(limit);
+    }
+
+    const tours = await getToursService(queries);
     res.status(200).json({
       status: "success",
       data: tours,
@@ -16,9 +38,9 @@ exports.getTours = async (req, res, next) => {
     });
   }
 };
+
 exports.createTours = async (req, res, next) => {
   try {
-    console.log("tour", req.body);
     const result = await createToursService(req.body);
 
     res.status(200).json({

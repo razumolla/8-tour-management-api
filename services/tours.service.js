@@ -7,6 +7,12 @@ exports.getToursService = async (queries) => {
 
 exports.getTourServiceById = async (tourId) => {
   const tour = await Tour.findById(tourId);
+  
+  // Increase the view count by 1 for this tour every time a user hits this endpoint.
+  const views = tour.viewCount;
+  tour.viewCount = views + 1;
+  await tour.save();
+
   return tour;
 };
 

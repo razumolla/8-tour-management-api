@@ -23,6 +23,10 @@ const toursSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    viewCount: {
+      type: Number,
+      default: 0,
+    },
     duration: {
       type: Number,
       min: [1, "Minimum Duration One Day"],

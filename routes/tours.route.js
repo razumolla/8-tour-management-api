@@ -6,10 +6,12 @@ router
   .route("/")
   .get(toursController.getTours)
   .post(toursController.createTours);
+
+router.route("/trending").get(toursController.getTrendingTours);
+
 router
   .route("/:id")
   .get(toursController.getToursById)
   .patch(toursController.updateTourById);
-
 
 module.exports = router;

@@ -4,6 +4,7 @@ const {
   createToursService,
   getTourServiceById,
   updateToursServiceById,
+  getTrendingTourService,
 } = require("../services/tours.service");
 
 exports.getTours = async (req, res, next) => {
@@ -109,4 +110,20 @@ exports.updateTourById = async (req, res, next) => {
   }
 };
 
+exports.getTrendingTours = async (req, res, next) => {
+  try {
+    const result = await getTrendingTourService();
 
+    res.status(200).json({
+      status: "success",
+      message: "Data inserted successfully!",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: "Data is not inserted",
+      error: error.message,
+    });
+  }
+};

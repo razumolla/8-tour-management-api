@@ -34,3 +34,8 @@ exports.updateToursServiceById = async (tourId, data) => {
   );
   return result;
 };
+
+exports.getTrendingTourService = async () => {
+  const result = await Tour.find({}).sort({ viewCount: -1 }).limit(3);
+  return result;
+};

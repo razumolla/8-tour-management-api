@@ -7,6 +7,19 @@ const {
 
 exports.getTours = async (req, res, next) => {
   try {
+    // gater than ,less than .... operator......
+    let filters = { ...req.query };
+    const excludeFields = ["sort", "page", "limit"];
+    excludeFields.forEach((field) => delete filters[field]);
+
+    let filterString = JSON.stringify(filters);
+    filterString = filterString.replace(
+      /\b(gt|gte|lte|lt|ne|eq|in)\b/g,
+      (match) => `$${match}`
+    );
+    filters = JSON.parse(filterString);
+
+    // QueryBy: fields, sortBy, limit, page
     const queries = {};
     if (req.query.fields) {
       // search query: fields=name,image --> output: sortBy: "name image"
@@ -20,13 +33,13 @@ exports.getTours = async (req, res, next) => {
     }
     //   -- paigination -----
     if (req.query.page) {
-      const { page = 1, limit = 10 } = req.query;
+      const { page = 1, limit = 10 } = req.query; // input page: "5", limit: "10"
       const skip = (page - 1) * parseInt(limit);
       queries.skip = skip;
       queries.limit = parseInt(limit);
     }
 
-    const tours = await getToursService(queries);
+    const tours = await getToursService(filters, queries);
     res.status(200).json({
       status: "success",
       data: tours,

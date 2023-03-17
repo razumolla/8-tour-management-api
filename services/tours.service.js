@@ -1,13 +1,17 @@
 const Tour = require("../models/Tour");
 
-exports.getToursService = async (queries) => {
-  const tours = await Tour.find({}).select(queries.fields).sort(queries.sortBy);
+exports.getToursService = async (filters, queries) => {
+  const tours = await Tour.find(filters)
+    .skip(queries.skip)
+    .limit(queries.limit)
+    .select(queries.fields)
+    .sort(queries.sortBy);
   return tours;
 };
 
 exports.getTourServiceById = async (tourId) => {
   const tour = await Tour.findById(tourId);
-  
+
   // Increase the view count by 1 for this tour every time a user hits this endpoint.
   const views = tour.viewCount;
   tour.viewCount = views + 1;

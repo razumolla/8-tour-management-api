@@ -24,3 +24,13 @@ exports.createToursService = async (data) => {
   const tours = await Tour.create(data);
   return tours;
 };
+exports.updateToursServiceById = async (tourId, data) => {
+  const result = await Tour.updateOne(
+    { _id: tourId },
+    { $set: data },
+    {
+      runValidators: true,
+    }
+  );
+  return result;
+};

@@ -40,7 +40,7 @@ const toursSchema = new mongoose.Schema(
           }
         },
       },
-      message: "Duration must be integer",
+      message: "Duration must be an integer",
     },
   },
   {

@@ -13,6 +13,7 @@ router.route("/cheapest").get(toursController.getCheapestTours);
 router
   .route("/:id")
   .get(toursController.getToursById)
-  .patch(toursController.updateTourById);
+  .patch(toursController.updateTourById)
+  .delete(toursController.deleteTourById);
 
 module.exports = router;

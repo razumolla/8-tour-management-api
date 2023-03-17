@@ -6,6 +6,7 @@ const {
   updateToursServiceById,
   getTrendingTourService,
   getCheapestTourService,
+  deleteToursServiceById,
 } = require("../services/tours.service");
 
 exports.getTours = async (req, res, next) => {
@@ -92,6 +93,40 @@ exports.createTours = async (req, res, next) => {
   }
 };
 
+exports.deleteTourById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    
+    // check this id from databse by find operation
+    const isTourExist = await Tour.exists({ _id: id });
+    if (!isTourExist) {
+      return res.status(400).json({
+        status: "failed",
+        error: "Tour does not exist",
+      });
+    }
+    const result = await deleteToursServiceById(id);
+
+    if (!result.deletedCount) {
+      return res.status(400).json({
+        status: "failed",
+        error: "Could't delete the Toue",
+      });
+    };
+
+    res.status(200).json({
+      status: "success",
+      message: "Tour delete successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "error",
+      message: "Can't delete the Tour",
+      error: error.message,
+    });
+  }
+};
 exports.updateTourById = async (req, res, next) => {
   try {
     const { id } = req.params;

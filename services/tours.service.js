@@ -24,6 +24,12 @@ exports.createToursService = async (data) => {
   const tours = await Tour.create(data);
   return tours;
 };
+
+exports.deleteToursServiceById = async (tourId) => {
+  const result = await Tour.deleteOne({ _id: tourId });
+  return result;
+};
+
 exports.updateToursServiceById = async (tourId, data) => {
   const result = await Tour.updateOne(
     { _id: tourId },
